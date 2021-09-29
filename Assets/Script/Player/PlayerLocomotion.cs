@@ -34,23 +34,8 @@ namespace SoulLike
         {
             float _delta = Time.deltaTime;
             inputHandler.TickInput(_delta);
-
-            moveDirection = cameraObject.forward * inputHandler.vertical;
-            moveDirection += cameraObject.right * inputHandler.horizontal;
-            moveDirection.Normalize();
-            moveDirection.y = 0;
-
-            float _speed = movementSpeed;
-            moveDirection *= _speed;
-
-            Vector3 _projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
-            rigidbody.velocity = _projectedVelocity;
-            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
-
-            if (animatorHandler.canRotate)
-            {
-                HandleRotation(_delta);
-            }
+            HandleMovement(_delta);
+            HandleRollingAndSprinting(_delta);
         }
         #region  -- Movement --
         Vector3 normalVector;
@@ -74,6 +59,52 @@ namespace SoulLike
             myTransform.rotation = _targetRotation;
 
             
+        }
+        private void HandleMovement(float _delta)
+        {
+
+            moveDirection = cameraObject.forward * inputHandler.vertical;
+            moveDirection += cameraObject.right * inputHandler.horizontal;
+            moveDirection.Normalize();
+            moveDirection.y = 0;
+
+            float _speed = movementSpeed;
+            moveDirection *= _speed;
+
+            Vector3 _projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
+            rigidbody.velocity = _projectedVelocity;
+            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
+
+            if (animatorHandler.canRotate)
+            {
+                HandleRotation(_delta);
+            }
+        }
+
+        public void HandleRollingAndSprinting(float _delta)
+        {
+            if (animatorHandler.animator.GetBool("IsInteracting"))
+                return;
+            if (inputHandler.rollFlag)
+            {
+                moveDirection = cameraObject.forward * inputHandler.vertical;
+                moveDirection += cameraObject.right * inputHandler.horizontal;
+                animatorHandler.PlayTargetAnimation("Rolling", true);
+                moveDirection.y = 0;
+                Quaternion _rollRotation = Quaternion.LookRotation(moveDirection);
+                myTransform.rotation = _rollRotation;
+                if (inputHandler.moveAmount > 0)
+                {
+                    //animatorHandler.PlayTargetAnimation("Rolling",true);
+                    //moveDirection.y = 0;
+                    //Quaternion _rollRotation = Quaternion.LookRotation(moveDirection);
+                    //myTransform.rotation = _rollRotation;
+                }
+                //else
+                //{
+                //    animatorHandler.PlayTargetAnimation("BackStep", true);
+                //}
+            }
         }
         #endregion
        

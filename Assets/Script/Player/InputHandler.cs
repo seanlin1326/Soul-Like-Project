@@ -11,12 +11,19 @@ namespace SoulLike
         public float mouseX;
         public float mouseY;
 
+        public bool b_Input;
+        public bool rollFlag;
+        public bool isInteracting;
         PlayerController inputActions;
         CameraHandler cameraHandler;
 
         Vector2 movementInput;
         Vector2 cameraInput;
         private void Awake()
+        {
+           
+        }
+        private void Start()
         {
             cameraHandler = CameraHandler.instance;
         }
@@ -46,6 +53,7 @@ namespace SoulLike
         public void TickInput(float _delta) 
         {
             MoveInput(_delta);
+            HandleRollInput(_delta);
         }
         private void MoveInput(float _delta)
         {
@@ -54,6 +62,14 @@ namespace SoulLike
             moveAmount = Mathf.Clamp01(Mathf.Abs(horizontal) +Mathf.Abs(vertical));
             mouseX = cameraInput.x;
             mouseY = cameraInput.y;
+        }
+        private void HandleRollInput(float _delta)
+        {
+            b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Started;
+            if (b_Input)
+            {
+                rollFlag = true;
+            }
         }
     }
 }

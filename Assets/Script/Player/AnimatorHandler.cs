@@ -91,13 +91,15 @@ namespace SoulLike
             if (inputHandler.isInteracting == false)
                 return;
             float _delta = Time.deltaTime;
+            //animator.ApplyBuiltinRootMotion();
             playerLocomotion.rigidbody.drag = 0;
             Vector3 _deltaPosition = animator.deltaPosition;
 
             _deltaPosition.y = 0;
-            Vector3 _velocity = _deltaPosition /_delta;
+            Vector3 _velocity = _deltaPosition / _delta;
             playerLocomotion.rigidbody.velocity = _velocity;
-           
+
+
 
         }
         // Start is called before the first frame update

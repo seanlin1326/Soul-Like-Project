@@ -89,21 +89,19 @@ namespace SoulLike
             {
                 moveDirection = cameraObject.forward * inputHandler.vertical;
                 moveDirection += cameraObject.right * inputHandler.horizontal;
-                animatorHandler.PlayTargetAnimation("Rolling", true);
-                moveDirection.y = 0;
-                Quaternion _rollRotation = Quaternion.LookRotation(moveDirection);
-                myTransform.rotation = _rollRotation;
+               
+               
                 if (inputHandler.moveAmount > 0)
                 {
-                    //animatorHandler.PlayTargetAnimation("Rolling",true);
-                    //moveDirection.y = 0;
-                    //Quaternion _rollRotation = Quaternion.LookRotation(moveDirection);
-                    //myTransform.rotation = _rollRotation;
+                    animatorHandler.PlayTargetAnimation("Rolling", true);
+                    moveDirection.y = 0;
+                    Quaternion _rollRotation = Quaternion.LookRotation(moveDirection);
+                    myTransform.rotation = _rollRotation;
                 }
-                //else
-                //{
-                //    animatorHandler.PlayTargetAnimation("BackStep", true);
-                //}
+                else
+                {
+                    animatorHandler.PlayTargetAnimation("StepBack", true);
+                }
             }
         }
         #endregion

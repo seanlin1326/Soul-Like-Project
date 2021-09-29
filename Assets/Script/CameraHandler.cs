@@ -14,6 +14,8 @@ namespace SoulLike
         [SerializeField]private LayerMask ignoreLayers;
         private Vector3 cameraFollowVelocity = Vector3.zero;
 
+        [SerializeField] float horizontalRotateSpeed=1;
+        [SerializeField] float verticalRotateSpeed = 1;
         public float lookSpeed = 0.1f;
         public float followSpeed = 0.1f;
         public float pivotSpeed = 0.03f;
@@ -58,13 +60,14 @@ namespace SoulLike
             _rotation.y = lookAngle;
             Quaternion _targetRotation = Quaternion.Euler(_rotation);
             //myTransform.rotation = _targetRotation;
-            myTransform.rotation = Quaternion.Slerp(myTransform.rotation, _targetRotation, _delta );
+            myTransform.rotation = Quaternion.Slerp(myTransform.rotation, _targetRotation, _delta * horizontalRotateSpeed);
             _rotation = Vector3.zero;
             _rotation.x = pivotAngle;
 
             _targetRotation = Quaternion.Euler(_rotation);
-            
-            cameraPivotTransform.localRotation = _targetRotation;
+
+            //cameraPivotTransform.localRotation = _targetRotation;
+            cameraPivotTransform.localRotation = Quaternion.Slerp(cameraPivotTransform.localRotation, _targetRotation, _delta * verticalRotateSpeed);
           
         }
         private void Update()

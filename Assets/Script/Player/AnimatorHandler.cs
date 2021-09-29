@@ -93,10 +93,11 @@ namespace SoulLike
             float _delta = Time.deltaTime;
             playerLocomotion.rigidbody.drag = 0;
             Vector3 _deltaPosition = animator.deltaPosition;
-           
+
             _deltaPosition.y = 0;
-            Vector3 _velocity = _deltaPosition / _delta;
+            Vector3 _velocity = _deltaPosition /_delta;
             playerLocomotion.rigidbody.velocity = _velocity;
+           
 
         }
         // Start is called before the first frame update
@@ -108,7 +109,7 @@ namespace SoulLike
         // Update is called once per frame
         void Update()
         {
-           
+          
         }
     }
 }

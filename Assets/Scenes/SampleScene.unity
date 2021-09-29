@@ -635,6 +635,8 @@ MonoBehaviour:
   ignoreLayers:
     serializedVersion: 2
     m_Bits: 0
+  horizontalRotateSpeed: 1
+  verticalRotateSpeed: 3
   lookSpeed: 0.1
   followSpeed: 1
   pivotSpeed: 0.03
@@ -885,7 +887,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1143948724280253249, guid: 6542bc3a0af326b47a2df01f0847f6d0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.539
+      value: 1.268
       objectReference: {fileID: 0}
     - target: {fileID: 1143948724280253249, guid: 6542bc3a0af326b47a2df01f0847f6d0, type: 3}
       propertyPath: m_LocalPosition.z
@@ -925,7 +927,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7621943529507820051, guid: 6542bc3a0af326b47a2df01f0847f6d0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -2.16
       objectReference: {fileID: 0}
     - target: {fileID: 7621943529507820051, guid: 6542bc3a0af326b47a2df01f0847f6d0, type: 3}
       propertyPath: m_LocalRotation.w

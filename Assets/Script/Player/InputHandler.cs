@@ -15,9 +15,9 @@ namespace SoulLike
         public bool rollFlag;
         public bool sprintFlag;
         private float rollInputTimer;
-        public bool isInteracting;
+       
         PlayerController inputActions;
-        CameraHandler cameraHandler;
+       
 
         Vector2 movementInput;
         Vector2 cameraInput;
@@ -27,17 +27,9 @@ namespace SoulLike
         }
         private void Start()
         {
-            cameraHandler = CameraHandler.instance;
+          
         }
-        private void FixedUpdate()
-        {
-            float _delta = Time.fixedDeltaTime;
-            if(cameraHandler != null)
-            {
-                cameraHandler.FollowTarget(_delta);
-                cameraHandler.HandleCameraRotation(_delta, mouseX, mouseY);
-            }
-        }
+        
         private void OnEnable()
         {
             if(inputActions == null)

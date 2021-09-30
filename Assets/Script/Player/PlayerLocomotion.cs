@@ -5,8 +5,9 @@ namespace SoulLike
 {
     public class PlayerLocomotion : MonoBehaviour
     {
+        PlayerManager playerManager;
         Transform cameraObject;
-        InputHandler inputHandler;
+       [SerializeField] InputHandler inputHandler;
         Vector3 moveDirection;
 
         [HideInInspector]
@@ -16,36 +17,37 @@ namespace SoulLike
         public new Rigidbody rigidbody;
         public GameObject normalCamera;
 
-        [Header("Stats")]
+        [Header("Movement Stats")]
         [SerializeField]
         float movementSpeed = 5;
         [SerializeField]
         float sprintSpeed=7f;
         [SerializeField]
         float rotationSpeed = 10;
-        [SerializeField] private bool isSprinting;
+
+        private void Awake()
+        {
+            
+        }
         private void Start()
         {
+            playerManager = GetComponent<PlayerManager>();
             rigidbody = GetComponent<Rigidbody>();
             inputHandler = GetComponent<InputHandler>();
             animatorHandler = GetComponentInChildren<AnimatorHandler>();
+            animatorHandler.Initialize();
             cameraObject = Camera.main.transform;
             myTransform = transform;
-            animatorHandler.Initialize();
         }
         private void Update()
         {
-            float _delta = Time.deltaTime;
-            isSprinting = inputHandler.b_Input;
-            inputHandler.TickInput(_delta);
-            HandleMovement(_delta);
-            HandleRollingAndSprinting(_delta);
+           
         }
         #region  -- Movement --
         Vector3 normalVector;
         Vector3 targetPosition;
 
-        private void HandleRotation(float _delta)
+        public void HandleRotation(float _delta)
         {
             Vector3 _targetDir = Vector3.zero;
             float _moveOverride = inputHandler.moveAmount;
@@ -64,7 +66,7 @@ namespace SoulLike
 
             
         }
-        private void HandleMovement(float _delta)
+        public void HandleMovement(float _delta)
         {
             if (inputHandler.rollFlag)
                 return;
@@ -77,13 +79,13 @@ namespace SoulLike
             if (inputHandler.sprintFlag)
             {
                 _speed = sprintSpeed;
-                isSprinting = true;
+              playerManager.isSprinting = true;
             }
             moveDirection *= _speed;
 
             Vector3 _projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
             rigidbody.velocity = _projectedVelocity;
-            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0,isSprinting);
+            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0,playerManager.isSprinting);
 
             if (animatorHandler.canRotate)
             {

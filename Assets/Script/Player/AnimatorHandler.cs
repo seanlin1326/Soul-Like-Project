@@ -5,6 +5,7 @@ namespace SoulLike
 {
     public class AnimatorHandler : MonoBehaviour
     {
+        PlayerManager playerManager;
         public Animator animator;
         public InputHandler inputHandler;
         private PlayerLocomotion playerLocomotion;
@@ -12,28 +13,33 @@ namespace SoulLike
         int horizontal;
         public bool canRotate;
 
-
+        // Start is called before the first frame update
+        void Start()
+        {
+            
+        }
         public void Initialize()
         {
+            playerManager = GetComponentInParent<PlayerManager>();
             animator = GetComponent<Animator>();
             playerLocomotion = GetComponentInParent<PlayerLocomotion>();
             inputHandler = GetComponentInParent<InputHandler>();
             vertical = Animator.StringToHash("Vertical");
             horizontal = Animator.StringToHash("Horizontal");
         }
-        public void UpdateAnimatorValues(float _verticalMovement,float _horizontalMovement,bool _isSprinting)
+        public void UpdateAnimatorValues(float _verticalMovement, float _horizontalMovement, bool _isSprinting)
         {
             #region -- vertical --
             float _v = 0;
-            if(_verticalMovement>0 && _verticalMovement < 0.55f)
+            if (_verticalMovement > 0 && _verticalMovement < 0.55f)
             {
                 _v = 0.5f;
             }
-            else if(_verticalMovement > 0.55f)
+            else if (_verticalMovement > 0.55f)
             {
                 _v = 1;
             }
-            else if(_verticalMovement < 0 && _verticalMovement> -0.55f)
+            else if (_verticalMovement < 0 && _verticalMovement > -0.55f)
             {
                 _v = -0.5f;
             }
@@ -48,19 +54,19 @@ namespace SoulLike
             #endregion
             #region -- horizontal --
             float _h = 0;
-            if(_horizontalMovement >0 && _horizontalMovement < 0.55f)
+            if (_horizontalMovement > 0 && _horizontalMovement < 0.55f)
             {
                 _h = 0.5f;
             }
-            else if(_horizontalMovement > 0.55f)
+            else if (_horizontalMovement > 0.55f)
             {
                 _h = 1;
             }
-            else if(_horizontalMovement <0 && _horizontalMovement > -0.55f)
+            else if (_horizontalMovement < 0 && _horizontalMovement > -0.55f)
             {
                 _h = -0.5f;
             }
-            else if(_horizontalMovement < -0.55f)
+            else if (_horizontalMovement < -0.55f)
             {
                 _h = -1;
             }
@@ -77,10 +83,11 @@ namespace SoulLike
             animator.SetFloat(vertical, _v, 0.1f, Time.deltaTime);
             animator.SetFloat(horizontal, _h, 0.1f, Time.deltaTime);
         }
-        public void PlayTargetAnimation(string _targetAnim,bool _isInteracting)
+        public void PlayTargetAnimation(string _targetAnim, bool _isInteracting)
         {
             animator.applyRootMotion = _isInteracting;
             animator.SetBool("IsInteracting", _isInteracting);
+            Debug.Log(animator.GetBool("IsInteracting"));
             animator.CrossFade(_targetAnim, 0.2f);
         }
         public void CanRotate()
@@ -93,7 +100,8 @@ namespace SoulLike
         }
         private void OnAnimatorMove()
         {
-            if (inputHandler.isInteracting == false)
+            
+            if (playerManager.isInteracting == false )
                 return;
             float _delta = Time.deltaTime;
             //animator.ApplyBuiltinRootMotion();
@@ -107,11 +115,7 @@ namespace SoulLike
 
 
         }
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
+       
 
         // Update is called once per frame
         void Update()

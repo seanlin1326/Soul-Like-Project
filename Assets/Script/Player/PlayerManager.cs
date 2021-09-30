@@ -20,6 +20,7 @@ namespace SoulLike
 
             inputHandler.isInteracting = animator.GetBool("IsInteracting");
             inputHandler.rollFlag = false;
+            inputHandler.sprintFlag = false;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace SoulLike
             vertical = Animator.StringToHash("Vertical");
             horizontal = Animator.StringToHash("Horizontal");
         }
-        public void UpdateAnimatorValues(float _verticalMovement,float _horizontalMove)
+        public void UpdateAnimatorValues(float _verticalMovement,float _horizontalMovement,bool _isSprinting)
         {
             #region -- vertical --
             float _v = 0;
@@ -48,19 +48,19 @@ namespace SoulLike
             #endregion
             #region -- horizontal --
             float _h = 0;
-            if(_horizontalMove >0 && _horizontalMove < 0.55f)
+            if(_horizontalMovement >0 && _horizontalMovement < 0.55f)
             {
                 _h = 0.5f;
             }
-            else if(_horizontalMove > 0.55f)
+            else if(_horizontalMovement > 0.55f)
             {
                 _h = 1;
             }
-            else if(_horizontalMove <0 && _horizontalMove > -0.55f)
+            else if(_horizontalMovement <0 && _horizontalMovement > -0.55f)
             {
                 _h = -0.5f;
             }
-            else if(_horizontalMove < -0.55f)
+            else if(_horizontalMovement < -0.55f)
             {
                 _h = -1;
             }
@@ -69,6 +69,11 @@ namespace SoulLike
                 _h = 0;
             }
             #endregion
+            if (_isSprinting)
+            {
+                _v = 2;
+                _h = _horizontalMovement;
+            }
             animator.SetFloat(vertical, _v, 0.1f, Time.deltaTime);
             animator.SetFloat(horizontal, _h, 0.1f, Time.deltaTime);
         }

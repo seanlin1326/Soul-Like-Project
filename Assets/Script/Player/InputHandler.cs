@@ -13,6 +13,8 @@ namespace SoulLike
 
         public bool b_Input;
         public bool rollFlag;
+        public bool sprintFlag;
+        private float rollInputTimer;
         public bool isInteracting;
         PlayerController inputActions;
         CameraHandler cameraHandler;
@@ -41,7 +43,7 @@ namespace SoulLike
             if(inputActions == null)
             {
                 inputActions = new PlayerController();
-                inputActions.PlayerMovement.Movement.performed += inputActions => movementInput = inputActions.ReadValue<Vector2>();
+                inputActions.PlayerMovement.Movement.performed += _j => movementInput = _j.ReadValue<Vector2>();
                 inputActions.PlayerMovement.Camera.performed += _i => cameraInput = _i.ReadValue<Vector2>();
             }
             inputActions.Enable();
@@ -68,7 +70,17 @@ namespace SoulLike
             b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Started;
             if (b_Input)
             {
-                rollFlag = true;
+                rollInputTimer += _delta;
+                sprintFlag = true;
+            }
+            else
+            {
+                if(rollInputTimer>0 && rollInputTimer < 0.5f)
+                {
+                    sprintFlag = false;
+                    rollFlag = true;
+                }
+                rollInputTimer = 0;
             }
         }
     }

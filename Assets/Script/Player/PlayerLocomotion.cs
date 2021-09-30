@@ -20,7 +20,10 @@ namespace SoulLike
         [SerializeField]
         float movementSpeed = 5;
         [SerializeField]
+        float sprintSpeed=7f;
+        [SerializeField]
         float rotationSpeed = 10;
+        [SerializeField] private bool isSprinting;
         private void Start()
         {
             rigidbody = GetComponent<Rigidbody>();
@@ -33,6 +36,7 @@ namespace SoulLike
         private void Update()
         {
             float _delta = Time.deltaTime;
+            isSprinting = inputHandler.b_Input;
             inputHandler.TickInput(_delta);
             HandleMovement(_delta);
             HandleRollingAndSprinting(_delta);
@@ -62,18 +66,24 @@ namespace SoulLike
         }
         private void HandleMovement(float _delta)
         {
-
+            if (inputHandler.rollFlag)
+                return;
             moveDirection = cameraObject.forward * inputHandler.vertical;
             moveDirection += cameraObject.right * inputHandler.horizontal;
             moveDirection.Normalize();
             moveDirection.y = 0;
 
             float _speed = movementSpeed;
+            if (inputHandler.sprintFlag)
+            {
+                _speed = sprintSpeed;
+                isSprinting = true;
+            }
             moveDirection *= _speed;
 
             Vector3 _projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
             rigidbody.velocity = _projectedVelocity;
-            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
+            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0,isSprinting);
 
             if (animatorHandler.canRotate)
             {
